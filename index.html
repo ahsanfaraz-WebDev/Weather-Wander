@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkySense</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Noto Serif", serif;
+        background-image: url("./clear.jpg"); /* Default to clear sky */
+        background-size: cover;
+        background-repeat: no-repeat;
+        overflow: hidden;
+        position: relative;
+        height: 100vh;
+        transition: background-image 0.5s ease-in-out;
+      }
+
+      .sidebar {
+        background-color: #00000052;
+        box-shadow: 12px 0 100px rgba(22, 9, 9, 0.863);
+        min-height: 100vh;
+        position: relative;
+        font-weight: bolder;
+        overflow-y: auto;
+        overflow-x: hidden;
+        flex: 0 0 20%;
+        color: rgb(202, 198, 198);
+      }
+
+      .weather-widget {
+        background-color: rgba(135, 206, 235, 0.7); /* Sky blue */
+        overflow-y: auto;
+        max-height: none;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        transition: background-color 0.5s ease-in-out;
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .logo {
+        width: 100px;
+        height: 80px;
+      }
+
+      .sidebar-link {
+        display: block;
+        padding: 10px;
+        text-align: center;
+        background: linear-gradient(to right, #56ccf2, #ffffff);
+        color: rgb(0, 0, 0);
+        border-radius: 5px;
+        transition: background 0.3s ease;
+        margin-bottom: 15px;
+      }
+
+      .sidebar-link:hover {
+        background: linear-gradient(to right, #ffffff, #56ccf2);
+      }
+
+      .search-button {
+        background: linear-gradient(to right, #56ccf2, #ffffff);
+        color: rgb(0, 0, 0);
+        border: none;
+
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .search-button:hover {
+        background: linear-gradient(to right, #ffffff, #56ccf2);
+      }
+
+      .user-profile {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        border: 3px solid #8cceef;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .user-profile:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+      .user-profiles {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        border: 3px solid #8cceef;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .user-profiles:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+      @media (max-width: 640px) {
+        .user-profiles {
+          display: none;
+        }
+      }
+      .grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+
+      .card {
+        background-color: rgba(135, 206, 235, 0.7); /* Sky blue */
+        transition: background-color 0.5s ease-in-out;
+      }
+
+      .card-h {
+        color: #000000;
+      }
+
+      .search-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        width: 100%;
+      }
+
+      .button-container {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      @media (max-width: 766px) {
+        .navbar .flex.items-center {
+          display: flex;
+        }
+      }
+
+      @media (max-width: 860px) {
+        .sidebar {
+          display: none;
+        }
+
+        .navbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 10px;
+          background-color: rgba(255, 255, 255, 0.3);
+          transition: background-color 0.3s ease;
+          z-index: 1000;
+        }
+        #menu-toggle:checked + #sideMenu {
+          right: 0;
+        }
+
+        #sideMenu {
+          position: fixed;
+          right: -100%;
+          top: 0;
+          bottom: 0;
+          width: 64%;
+          background-color: rgba(255, 255, 255, 0.9);
+          transition: right 0.3s ease;
+          z-index: 50;
+          padding: 20px;
+          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        #sideMenu ul {
+          margin-top: 40px;
+        }
+        .logo {
+          width: 100px;
+          height: 80px;
+        }
+
+        .search-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-top: 20px;
+        }
+
+        .button-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-top: 10px;
+        }
+
+        .button-container button {
+          margin-bottom: 10px;
+        }
+        .search-button {
+          width: 100%;
+        }
+      }
+
+      /* Additional styles for bold text with shadow */
+      #weatherWidget p {
+        font-weight: bolder;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex flex-col md:flex-row w-full h-full">
+      <div class="sidebar shadow-md p-6 hidden md:block">
+        <div class="logo-container">
+          <img src="./logo.png" alt="SkySense Logo" class="logo mr-4" />
+        </div>
+        <ul class="space-y-4">
+          <li>
+            <a
+              href="index.html"
+              class="sidebar-link"
+              style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+              >Dashboard</a
+            >
+          </li>
+          <li>
+            <a
+              href="tables.html"
+              class="sidebar-link"
+              style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+              >Tables</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div class="navbar md:hidden flex justify-between items-center">
+        <div class="logo-container flex items-center">
+          <img src="./logo.png" alt="SkySense Logo" class="logo" />
+        </div>
+        <div class="flex items-center">
+          <label for="menu-toggle" class="cursor-pointer">
+            <img src="./menu-black.png" alt="menu" class="w-6 mr-2" />
+          </label>
+          <img src="./profile.png" alt="User Profile" class="user-profile" />
+        </div>
+        <input type="checkbox" id="menu-toggle" class="hidden" />
+        <ul id="sideMenu" class="flex flex-col gap-4 py-20 px-10">
+          <div class="absolute right-6 top-6 close-btn">
+            <label for="menu-toggle" class="cursor-pointer">
+              <img src="./close-black.png" alt="Close" class="w-4" />
+            </label>
+          </div>
+          <li>
+            <a
+              href="index.html"
+              class="sidebar-link mt-16 font-extrabold"
+              style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+              >Dashboard</a
+            >
+          </li>
+          <li>
+            <a
+              href="tables.html"
+              class="sidebar-link mt-2 font-extrabold"
+              style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+              >Tables</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div class="flex-grow p-8 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8 search-container">
+          <input
+            id="cityInput"
+            type="text"
+            placeholder="Enter city"
+            class="px-4 py-2 border border-gray-300 rounded-md w-64"
+            style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+          />
+          <div class="button-container">
+            <button
+              id="searchButton"
+              class="search-button font-extrabold flex gap-1 pr-8 sm:w-[100%] lg:w-auto"
+              style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+            >
+              <img src="./icon.png" alt="weatherIcon" class="w-6 h-6" />
+              Get Weather
+            </button>
+            <button
+              id="locationButton"
+              class="search-button font-extrabold flex gap-1 pr-8"
+              style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+            >
+              <img src="./loc-icon.png" alt="weatherIcon" class="w-6 h-6" />
+              by Location
+            </button>
+            <button
+              id="unitToggle"
+              class="search-button font-extrabold"
+              style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+            >
+              °C/°F
+            </button>
+          </div>
+          <img
+            src="./profile.png"
+            alt="User Profile"
+            class="user-profiles sm:hidden lg:block"
+            style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+          />
+        </div>
+
+        <div
+          id="weatherWidget"
+          class="max-h-full weather-widget shadow-md p-8 rounded-md mb-8 text-center overflow-y-auto"
+          style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+        >
+          <h2 id="cityName" class="text-3xl font-bold mb-2">
+            Weather Information
+          </h2>
+          <img
+            id="weatherIcon"
+            alt="Weather Icon"
+            class="mb-2"
+            style="display: none"
+          />
+          <p id="temperature" class="text-lg">Temperature: --°C</p>
+          <p id="humidity">Humidity: --%</p>
+          <p id="windSpeed">Wind Speed: -- m/s</p>
+          <p id="condition">Condition: --</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            class="card shadow-md p-6 rounded-md text-center"
+            style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+          >
+            <h3 class="card-h text-lg font-bold">Vertical Bar Chart</h3>
+            <canvas id="barChart"></canvas>
+          </div>
+          <div
+            class="card shadow-md p-6 rounded-md text-center"
+            style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+          >
+            <h3 class="card-h text-lg font-bold">Doughnut Chart</h3>
+            <canvas id="doughnutChart"></canvas>
+          </div>
+          <div
+            class="card shadow-md p-6 rounded-md text-center"
+            style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+          >
+            <h3 class="card-h text-lg font-bold">Line Chart</h3>
+            <canvas id="lineChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

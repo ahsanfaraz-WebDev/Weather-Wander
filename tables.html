@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkySense</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Serif:ital,wght@0,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Noto Serif", serif;
+        background: url("./clear.jpg") no-repeat center center fixed;
+        background-size: cover;
+        overflow: hidden;
+        position: relative;
+        height: 100vh;
+      }
+
+      .sidebar {
+        background-color: #1b1f2368;
+        box-shadow: 12px 0 100px rgba(22, 9, 9, 0.863);
+        min-height: 100vh;
+        position: relative;
+        font-weight: bolder;
+        overflow-y: auto;
+        overflow-x: hidden;
+        flex: 0 0 20%;
+        color: rgb(202, 198, 198);
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .logo {
+        width: 100px;
+        height: 80px;
+      }
+
+      .sidebar-link {
+        display: block;
+        padding: 10px;
+        text-align: center;
+        background: linear-gradient(to right, #56ccf2, #ffffff);
+        color: rgb(0, 0, 0);
+        border-radius: 5px;
+        transition: background 0.3s ease;
+        margin-bottom: 15px;
+        box-shadow: 0 0 10px rgb(54, 53, 53);
+      }
+
+      .sidebar-link:hover {
+        background: linear-gradient(to right, #ffffff, #56ccf2);
+      }
+
+      .search-button {
+        background: linear-gradient(to right, #56ccf2, #ffffff);
+        color: rgb(0, 0, 0);
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .search-button:hover {
+        background: linear-gradient(to right, #ffffff, #56ccf2);
+      }
+
+      .user-profile {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        border: 3px solid #8cceef;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .user-profile:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .user-profiles {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        border: 3px solid #8cceef;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .user-profiles:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+      @media (max-width: 640px) {
+        .user-profiles {
+          display: none;
+        }
+      }
+      .search-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        width: 100%;
+      }
+
+      .button-container {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      @media (max-width: 766px) {
+        .navbar .flex.items-center {
+          display: flex;
+        }
+      }
+
+      @media (max-width: 860px) {
+        .sidebar {
+          display: none;
+        }
+
+        .navbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 10px;
+          background-color: rgba(255, 255, 255, 0.3);
+          transition: background-color 0.3s ease;
+          z-index: 1000;
+        }
+
+        #menu-toggle:checked + #sideMenu {
+          right: 0;
+        }
+
+        #sideMenu {
+          position: fixed;
+          right: -100%;
+          top: 0;
+          bottom: 0;
+          width: 64%;
+          background-color: rgba(255, 255, 255, 0.871);
+          transition: right 0.3s ease;
+          z-index: 50;
+          padding: 20px;
+          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        #sideMenu ul {
+          margin-top: 40px;
+        }
+
+        .logo {
+          width: 100px;
+          height: 80px;
+        }
+
+        .search-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-top: 20px;
+        }
+
+        .button-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-top: 10px;
+        }
+
+        .button-container button {
+          margin-bottom: 10px;
+        }
+        .search-button {
+          width: 100%;
+        }
+      }
+
+      .forecast-container {
+        background-color: rgba(135, 206, 235, 0.7); /* Sky blue */
+        box-shadow: 0 0 10px rgb(54, 53, 53);
+        transition: background-color 0.5s ease-in-out;
+      }
+      /* add some shadow affect to these buttons */
+      .filter-button,
+      .sort-button,
+      .highest-temp-button {
+        box-shadow: 0 0 10px rgb(95, 92, 92);
+
+        background: linear-gradient(to right, #56ccf2, #ffffff);
+        color: rgb(0, 0, 0);
+        border: none;
+        font-size: 0.9rem;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+      .filter-button:hover {
+        background: linear-gradient(to right, #ffffff, #0693c2);
+      }
+      .sort-button:hover {
+        background: linear-gradient(to right, #ffffff, #0693c2);
+      }
+      .highest-temp-button:hover {
+        background: linear-gradient(to right, #ffffff, #0693c2);
+      }
+      .table-cell {
+        color: white;
+      }
+
+      .chatbot-container {
+        background-color: rgba(135, 206, 235, 0.7); /* Sky blue */
+        transition: background-color 0.5s ease-in-out;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 16px;
+        border-radius: 8px;
+        width: 100%;
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #chatbotResponse {
+        background-color: rgba(243, 244, 246, 0.8);
+        padding: 16px;
+        border-radius: 8px;
+        flex-grow: 1;
+        overflow-y: auto;
+        margin-bottom: 16px;
+      }
+
+      #chatbotInput {
+        padding: 8px;
+        border: 1px solid #d1d5db;
+        border-radius: 4px;
+        width: 100%;
+        margin-bottom: 8px;
+      }
+
+      .send {
+        padding: 8px;
+        box-shadow: 0 0 10px rgb(95, 92, 92);
+
+        background: linear-gradient(to right, #56ccf2, #ffffff);
+        color: rgb(0, 0, 0);
+        border: none;
+        border-radius: 4px;
+        width: 100%;
+        cursor: pointer;
+      }
+
+      .send:hover {
+        background-color: #2563eb;
+      }
+
+      #buttonContainer button {
+        width: 100%;
+      }
+
+      @media (min-width: 1024px) {
+        #buttonContainer {
+          flex-direction: row;
+          flex: 1;
+        }
+
+        #buttonContainer button {
+          width: auto;
+          flex: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex flex-col md:flex-row w-full h-full">
+      <div class="sidebar shadow-md p-6 hidden md:block">
+        <div class="logo-container">
+          <img src="./logo.png" alt="SkySense Logo" class="logo mr-4" />
+        </div>
+        <ul class="space-y-4">
+          <li>
+            <a href="index.html" class="sidebar-link">Dashboard</a>
+          </li>
+          <li>
+            <a href="tables.html" class="sidebar-link">Tables</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="navbar md:hidden flex justify-between items-center">
+        <div class="logo-container flex items-center">
+          <img src="./logo.png" alt="SkySense Logo" class="logo" />
+        </div>
+        <div class="flex items-center">
+          <label for="menu-toggle" class="cursor-pointer">
+            <img src="./menu-black.png" alt="menu" class="w-6 mr-2" />
+          </label>
+          <img src="./profile.png" alt="User Profile" class="user-profile" />
+        </div>
+        <input type="checkbox" id="menu-toggle" class="hidden" />
+        <ul id="sideMenu" class="flex flex-col gap-4 py-20 px-10">
+          <div class="absolute right-6 top-6 close-btn">
+            <label for="menu-toggle" class="cursor-pointer">
+              <img src="./close-black.png" alt="Close" class="w-4" />
+            </label>
+          </div>
+          <li>
+            <a
+              href="index.html"
+              class="sidebar-link mt-20 font-extrabold"
+              style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+              >Dashboard</a
+            >
+          </li>
+          <li>
+            <a
+              href="tables.html"
+              class="sidebar-link mt-2 font-extrabold"
+              style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+              >Tables</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div class="flex-grow p-8 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8 search-container">
+          <input
+            id="cityInput"
+            type="text"
+            placeholder="Enter city"
+            class="px-4 py-2 border border-gray-300 rounded-md w-64"
+          />
+          <div class="button-container">
+            <button
+              id="searchButton"
+              class="search-button font-extrabold flex gap-1 pr-8 sm:w-[100%] lg:w-auto"
+              style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+            >
+              <img src="./icon.png" alt="weatherIcon" class="w-6 h-6" />
+              Get Weather
+            </button>
+            <button
+              id="locationButton"
+              class="search-button font-extrabold flex gap-1 pr-8"
+              style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+            >
+              <img src="./loc-icon.png" alt="weatherIcon" class="w-6 h-6" />
+              by Location
+            </button>
+            <button
+              id="unitToggle"
+              class="search-button font-extrabold"
+              style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+            >
+              °C/°F
+            </button>
+          </div>
+          <img
+            src="./profile.png"
+            alt="User Profile"
+            class="user-profiles sm:hidden lg:block"
+            style="box-shadow: 0 0 10px rgb(54, 53, 53)"
+          />
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+          <div
+            class="shadow-md p-6 rounded-md w-full lg:w-2/3 forecast-container"
+          >
+            <h3 class="text-xl text-white font-white font-bold mb-4">
+              5-Day Temperature Forecast
+            </h3>
+            <div class="overflow-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-gray-200">
+                    <th class="border-b p-4">Day</th>
+                    <th class="border-b p-4">Date</th>
+                    <th class="border-b p-4">Max Temp</th>
+                    <th class="border-b p-4">Min Temp</th>
+                    <th class="border-b p-4">Condition</th>
+                  </tr>
+                </thead>
+                <tbody id="weatherTableBody">
+                  <!-- Table data will be inserted dynamically using JavaScript -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-4 flex justify-between items-center" id="pagination">
+              <button
+                id="prevPage"
+                class="px-4 py-2 bg-gray-300 font-extrabold rounded"
+              >
+                Previous
+              </button>
+              <span id="pageInfo" class="font-bold"></span>
+              <button
+                id="nextPage"
+                class="px-4 py-2 bg-gray-300 font-extrabold rounded"
+              >
+                Next
+              </button>
+            </div>
+
+            <div
+              class="mt-4 flex flex-col lg:flex-row justify-end space-y-2 lg:space-y-0 lg:space-x-4"
+              id="buttonContainer"
+            >
+              <button
+                onclick="sortTemperaturesAscending()"
+                class="sort-button w-full lg:w-auto font-extrabold"
+              >
+                Sort-Asc
+              </button>
+              <button
+                onclick="sortTemperaturesDescending()"
+                class="sort-button w-full lg:w-auto font-extrabold"
+              >
+                Sort-Dsc
+              </button>
+              <button
+                onclick="filterRainyDays()"
+                class="filter-button w-full lg:w-auto font-extrabold"
+              >
+                Filter Rainy
+              </button>
+              <button
+                onclick="findDayWithHighestTemperature()"
+                class="highest-temp-button w-full lg:w-auto pr-2 font-extrabold"
+              >
+                High Temp Day
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="shadow-md p-6 rounded-md w-full lg:w-1/3 chatbot-container"
+          >
+            <h3 class="text-xl font-bold mb-4">Chatbot</h3>
+            <div
+              class="bg-gray-100 p-4 rounded-md h-64 mb-4 overflow-auto"
+              id="chatbotResponse"
+            >
+              <!-- Chatbot Responses -->
+            </div>
+            <input
+              type="text"
+              id="chatbotInput"
+              placeholder="Ask a question..."
+              class="px-4 py-2 border border-gray-300 rounded-md w-full"
+            />
+            <button class="send mt-2 px-4 py-2 rounded-md w-full font-bold">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./tables.js"></script>
+  </body>
+</html>
